@@ -3,7 +3,7 @@
 
 <h3>Current Version: 1.0</h3>
 <br>
-<h4>Version 1.0</h4> <br>
+<h4>Version 1.0</h4>
 This version of the application displays the information retrieved from a database on the client.
 The purpose of this application is to show the ability to connect the Front-end, Back-end and Database of the eCommerce Application.
 
