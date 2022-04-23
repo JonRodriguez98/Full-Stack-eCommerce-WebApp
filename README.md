@@ -1,7 +1,7 @@
 # Full-Stack-eCommerce-WebApp
 <h2>End to End Full-Stack eCommerce WebApp: Spring Boot and Angular</h2>
 
-Current Version: 1.0
+<h3>Current Version: 1.0</h3>
 
 Version 1.0 <br>
 This version of the application displays the information retrieved from a database on the client.
