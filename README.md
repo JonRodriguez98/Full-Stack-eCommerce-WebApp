@@ -3,7 +3,7 @@ End to End Full-Stack eCommerce WebApp: Spring Boot and Angular
 
 Current Version: 1.0
 
-Version 1.0 
+Version 1.0 <br>
 This version of the application displays the information retrieved from a database on the client.
 The purpose of this application is to show the ability to connect the Front-end, Back-end and Database of the eCommerce Application.
 
