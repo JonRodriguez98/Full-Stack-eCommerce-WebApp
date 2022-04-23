@@ -2,12 +2,12 @@
 <h2>End to End Full-Stack eCommerce WebApp: Spring Boot and Angular</h2>
 
 <h3>Current Version: 1.0</h3>
-
-Version 1.0 <br>
+<br>
+<h4>Version 1.0</h4> <br>
 This version of the application displays the information retrieved from a database on the client.
 The purpose of this application is to show the ability to connect the Front-end, Back-end and Database of the eCommerce Application.
 
-How does it work?
+<h4>How does it work?</h4>
 
 The Back-End is a Spring Boot application that handle HTTP requests through REST APIs. Accesses the Database using CRUD methods from JPA, and returns the data as JSON to the front-End Angular application.
 
