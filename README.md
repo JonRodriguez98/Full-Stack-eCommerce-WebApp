@@ -1,5 +1,5 @@
 # Full-Stack-eCommerce-WebApp
-End to End Full-Stack eCommerce WebApp: Spring Boot and Angular
+<h2>End to End Full-Stack eCommerce WebApp: Spring Boot and Angular</h2>
 
 Current Version: 1.0
 
