@@ -1,30 +1,64 @@
 //This Dependency Accesses the API through the HttpClient Dependency in order to get a response from the backend server
 //acquires the JSON from _embedded.products and places that JSON data into the Product array.
 
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponseBase } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import { Product } from '../common/product';
+import { ProductCategory } from '../common/product-category';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
 
-  private baseUrl = "http://localhost:8080/api/products?size=100";
+
+
+  private baseUrl = "http://localhost:8080/api/products";
+
+  private categoryUrl = 'http://localhost:8080/api/product-category';
 
   constructor(private httpClient: HttpClient) { }
 
+
   //Httpclient maps the JSON data from the rest API to the array of Products that is described in the Product Class.
-  getProductList(): Observable<Product[]> {
-    return this.httpClient.get<GetResponse>(this.baseUrl).pipe(map(response => response._embedded.products)
+  getProductList(theCategoryId: number): Observable<Product[]> {
+
+    //need to build new URL based on category Id
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
+    return this.getProducts(searchUrl);
+
+  }
+
+  searchProducts(theKeyword: string): Observable<Product[]> {
+
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`
+    return this.getProducts(searchUrl);
+  }
+
+
+  private getProducts(searchUrl: string): Observable<Product[]> {
+    return this.httpClient.get<GetResponseProducts>(searchUrl).pipe(map(response => response._embedded.products)
+    );
+  }
+
+
+  getProductCategories(): Observable<ProductCategory[]> {
+    return this.httpClient.get<GetResponseProductCategory>(this.categoryUrl).pipe(
+      map(response => response._embedded.productCategory)
     );
   }
 }
 
 //This interface unwraps the JSON data from _embedded.products and places it into Product Array.
-interface GetResponse {
+interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  }
+
+}
+interface GetResponseProductCategory {
+  _embedded: {
+    productCategory: ProductCategory[];
   }
 }
