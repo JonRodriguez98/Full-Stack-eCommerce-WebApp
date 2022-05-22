@@ -22,6 +22,14 @@ export class ProductService {
 
   constructor(private httpClient: HttpClient) { }
 
+  getProductListPaginate(thePage: number, thePageSize: number, theCategoryId: number): Observable<GetResponseProducts> {
+
+    //need to build new URL based on category Id
+    const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
+                    + `&page=${thePage}&size=${thePageSize}`
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
+
+  }
 
   //Httpclient maps the JSON data from the rest API to the array of Products that is described in the Product Class.
   getProductList(theCategoryId: number): Observable<Product[]> {
@@ -29,6 +37,14 @@ export class ProductService {
     //need to build new URL based on category Id
     const searchUrl = `${this.baseUrl}/search/findByCategoryId?id=${theCategoryId}`
     return this.getProducts(searchUrl);
+
+  }
+  searchProductsPaginate(thePage: number, thePageSize: number, theKeyword: string): Observable<GetResponseProducts> {
+
+    //need to build new URL based on category Id
+    const searchUrl = `${this.baseUrl}/search/findByNameContaining?name=${theKeyword}`
+                    + `&page=${thePage}&size=${thePageSize}`
+    return this.httpClient.get<GetResponseProducts>(searchUrl);
 
   }
 
@@ -63,7 +79,14 @@ export class ProductService {
 interface GetResponseProducts {
   _embedded: {
     products: Product[];
+  },
+  page: {
+    size: number,
+    totalElements: number,
+    totalPages: number,
+    number: number
   }
+
 
 }
 interface GetResponseProductCategory {

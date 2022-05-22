@@ -15,10 +15,18 @@ import { ProductService } from 'src/app/services/product.service';
 })
 export class ProductListComponent implements OnInit {
 
-  products: Product[];
+  products: Product[] = [];
   currentCategoryName!: string;
-  currentCategoryId: number = 0;
-  searchMode: boolean;
+  currentCategoryId: number = 1;
+  previousCategoryId: number = 1;
+  searchMode: boolean = false;
+
+  //pagination properties (controls howmany products are displayed on the webpage)
+  thePageNumber: number = 1;
+  thePageSize: number = 12;
+  theTotalElements: number = 0;
+  
+  previousKeyword: string;
 
   //we add the dependency but also add the Activated route in order to access the route params
   constructor(private productService: ProductService,
@@ -51,8 +59,19 @@ export class ProductListComponent implements OnInit {
   handleSearchProducts() {
     const theKeyword: string = this.route.snapshot.paramMap.get('keyword')!;
 
+    //if we have a different keyword than previous
+    //then set thePageNumber to 1
+
+    if(this.previousKeyword != theKeyword) {
+      this.thePageNumber= 1;
+    } 
+
+    this.previousKeyword = theKeyword;
+
+    console.log(`keyword=${theKeyword}, thePageNumber=${this.thePageNumber}`)
+
     //now search products using keyword
-    this.productService.searchProducts(theKeyword).subscribe(data => { this.products = data; })
+    this.productService.searchProductsPaginate(this.thePageNumber-1,this.thePageSize, theKeyword).subscribe(this.processResult());
   }
 
   handleListProducts() {
@@ -71,13 +90,33 @@ export class ProductListComponent implements OnInit {
       this.currentCategoryId = 1;
       this.currentCategoryName = 'Books';
     }
+    //
+    //Check if we have different category than previous since angular will reuse a component if its currently being viewed
+    
+    //if the category id is different than previous. Reset pageNumber back to 1.
+    if(this.previousCategoryId != this.currentCategoryId) {
+      this.thePageNumber=1;
+    }
 
-    //now get the products for the given id
-    this.productService.getProductList(this.currentCategoryId).subscribe(
-      data => {
-        this.products = data;
-      }
-    )
+    this.previousCategoryId = this.currentCategoryId;
 
+    console.log(`currentCategoryId=${this.currentCategoryId}, thePageNumber=${this.thePageNumber}`)
+
+    //now get the products for the given id (Page number is -1 because Bootstrap component is 1 based while SpringDataRest is 0 based)
+    this.productService.getProductListPaginate(this.thePageNumber - 1, this.thePageSize, this.currentCategoryId)
+    .subscribe(this.processResult());
+  
+
+      
   }
+
+  processResult() { 
+    return data  => {
+      this.products= data._embedded.products;
+      this.thePageNumber = data.page.number + 1;
+      this.thePageSize = data.page.size;
+      this.theTotalElements = data.page.totalElements;
+  };
+  
+}
 }
