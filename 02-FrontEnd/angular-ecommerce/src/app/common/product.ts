@@ -2,7 +2,6 @@
 //recieved from the back-end and will then be placed in an array of Product objects.
 
 export class Product {
-    id!: number;
     sku!: string;
     name!: string;
     description!: string;
