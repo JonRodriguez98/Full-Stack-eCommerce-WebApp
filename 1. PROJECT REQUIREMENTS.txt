@@ -14,5 +14,5 @@ Add products to shopping cart (CRUD)
 Shopping cart check out
 
 Release 3.0
-User login/logour security
+User login/logout security
 Track previous orders for logged in users
